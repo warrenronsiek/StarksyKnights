@@ -36,14 +36,8 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     var bestSolution = Double.PositiveInfinity
     val relaxedMovesRemaining = relaxedOptimalEstimate(end)
 
-    val freakyChessHeuristic = (a: (Int, Int), b: (Int, Int)) => {
-      (chessDistance(a, end) % 2 > chessDistance(b, end) % 2) ||
-        ((chessDistance(a, end) % 2 == chessDistance(b, end) % 2) && chessDistance(a, end) < chessDistance(b, end))
-    }
     val chosenHeuristic = heuristic match {
       case "Chess" => (x: List[(Int, Int)]) => x.sortWith(chessDistance(_, end) < chessDistance(_, end))
-      case "Freaky" => (x: List[(Int, Int)]) => x.sortWith(chessDistance(_, end) % 2 > chessDistance(_, end) % 2)
-      case "FreakyChess" => (x: List[(Int, Int)]) => x.sortWith(freakyChessHeuristic)
       case "None" => x: List[(Int, Int)] => x
       case _ => x: List[(Int, Int)] => x
     }

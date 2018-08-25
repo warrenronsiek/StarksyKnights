@@ -48,15 +48,6 @@ class StarskyKnightsTest extends FunSpec {
       assert(sk32.validateMoves(path))
     }
 
-    it("Solves NTP w/ Freaky Heuristics and Bounding") {
-      val path = sk32.computePath((10, 5), (20, 31), "Freaky", useBounding = true)
-      assert(sk32.validateMoves(path))
-    }
-    it("Solves NTP w/ Extra Freaky Heuristics and Bounding") {
-      val path = sk32.computePath((10, 5), (20, 31), "FreakyChess", useBounding = true)
-      assert(sk32.validateMoves(path))
-    }
-
   }
 
 }
