@@ -1,13 +1,15 @@
 package starskyknights
 
 import scala.collection.mutable
-import scala.math.{max, abs}
+import scala.math.{max, abs, ceil}
 
 class StarskyKnights(nRows: Int, nCols: Int) {
 
   private def mapFactory = mutable.Map[(Int, Int), Boolean]().withDefaultValue(false)
 
-  private val chebyshevDistance = (a: (Int, Int), b: (Int, Int)) => max(abs(a._1 - b._1), abs(a._2 - b._2))
+  private val chessDistance = (a: (Int, Int), b: (Int, Int)) => max(abs(a._1 - b._1), abs(a._2 - b._2))
+
+  private val relaxedOptimalEstimate = (end: (Int, Int)) => (a: (Int, Int)) => ceil(chessDistance(a, end) / 2.0)
 
   def generateMoveSet(tile: (Int, Int), traversed: mutable.Map[(Int, Int), Boolean] = mapFactory): Set[(Int, Int)] = {
     Set(
@@ -29,10 +31,19 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     }
   }
 
-  def computePath(start: (Int, Int), end: (Int, Int), heuristic: String = "None"): List[(Int, Int)] = {
+  def computePath(start: (Int, Int), end: (Int, Int), heuristic: String = "None", useBounding: Boolean = false): List[(Int, Int)] = {
     var traversed = mapFactory
+    var bestSolution = Double.PositiveInfinity
+    val relaxedMovesRemaining = relaxedOptimalEstimate(end)
+
+    val freakyChessHeuristic = (a: (Int, Int), b: (Int, Int)) => {
+      (chessDistance(a, end) % 2 > chessDistance(b, end) % 2) ||
+        ((chessDistance(a, end) % 2 == chessDistance(b, end) % 2) && chessDistance(a, end) < chessDistance(b, end))
+    }
     val chosenHeuristic = heuristic match {
-      case "Chebyshev" => x: List[(Int, Int)] => x.sortWith(chebyshevDistance(_, end) < chebyshevDistance(_, end))
+      case "Chess" => (x: List[(Int, Int)]) => x.sortWith(chessDistance(_, end) < chessDistance(_, end))
+      case "Freaky" => (x: List[(Int, Int)]) => x.sortWith(chessDistance(_, end) % 2 > chessDistance(_, end) % 2)
+      case "FreakyChess" => (x: List[(Int, Int)]) => x.sortWith(freakyChessHeuristic)
       case "None" => x: List[(Int, Int)] => x
       case _ => x: List[(Int, Int)] => x
     }
@@ -40,8 +51,12 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     def recursiveTraversal(path: List[(Int, Int)]): List[(Int, Int)] = {
       val currentPosition = path.head
       if (currentPosition == end) {
+        if (useBounding && path.length < bestSolution) bestSolution = path.length
+        return path
+      } else if (useBounding && (path.length + relaxedMovesRemaining(path.head)) > bestSolution ) {
         return path
       }
+
       traversed += (currentPosition -> true)
       val possibleMoves = generateMoveSet(path.head, traversed)
       if (possibleMoves == Set()) {

@@ -6,14 +6,14 @@ class StarskyKnightsTest extends FunSpec {
   describe("Basic Functionality") {
     val sk = new StarskyKnights(4, 4)
     it("Generates Valid Moves") {
-      assert(sk.generateMoveSet((3,3)) === Set((1, 2), (2,1)))
+      assert(sk.generateMoveSet((3, 3)) === Set((1, 2), (2, 1)))
     }
 
     it("Validates Valid Path") {
-      assert(sk.validateMoves(List((3,2), (2, 0), (1, 2), (3,3))))
+      assert(sk.validateMoves(List((3, 2), (2, 0), (1, 2), (3, 3))))
     }
 
-    it( "Invalidates Invalid Path") {
+    it("Invalidates Invalid Path") {
       assert(sk.validateMoves(List((3, 2), (3, 0), (1, 1), (3, 1))) === false)
     }
   }
@@ -29,21 +29,33 @@ class StarskyKnightsTest extends FunSpec {
     }
 
     it("Solves Slightly Less Trivial Path") {
-      val path = sk12.computePath((1,7), (2, 10))
+      val path = sk12.computePath((1, 7), (2, 10))
       assert(sk12.validateMoves(path))
     }
 
     it("Solves Non-Trivial Path") {
-      val path = sk32.computePath((1, 5), (20, 31))
+      val path = sk32.computePath((10, 5), (20, 31))
       assert(sk32.validateMoves(path))
     }
 
-    it("Solves Non-Trivial Path with Heuristics") {
-      val path = sk32.computePath((1, 5), (20, 31), "Chebyshev")
+    it("Solves Non-Trivial Path with Bounding") {
+      val path = sk32.computePath((10, 5), (20, 31), useBounding = true)
       assert(sk32.validateMoves(path))
     }
 
+    it("Solves Non-Trivial Path with Heuristics and Bounding") {
+      val path = sk32.computePath((10, 5), (20, 31), "Chess", useBounding = true)
+      assert(sk32.validateMoves(path))
+    }
 
+    it("Solves NTP w/ Freaky Heuristics and Bounding") {
+      val path = sk32.computePath((10, 5), (20, 31), "Freaky", useBounding = true)
+      assert(sk32.validateMoves(path))
+    }
+    it("Solves NTP w/ Extra Freaky Heuristics and Bounding") {
+      val path = sk32.computePath((10, 5), (20, 31), "FreakyChess", useBounding = true)
+      assert(sk32.validateMoves(path))
+    }
 
   }
 
