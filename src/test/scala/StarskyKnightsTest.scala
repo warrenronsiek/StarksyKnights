@@ -21,6 +21,7 @@ class StarskyKnightsTest extends FunSpec {
   describe("Path Finding Functionality") {
     val sk4 = new StarskyKnights(4, 4)
     val sk12 = new StarskyKnights(12, 12)
+    val sk32 = new StarskyKnights(32, 32)
 
     it("Solves Trivial Path") {
       val path = sk4.computePath((0, 0), (2, 1))
@@ -31,6 +32,18 @@ class StarskyKnightsTest extends FunSpec {
       val path = sk12.computePath((1,7), (2, 10))
       assert(sk12.validateMoves(path))
     }
+
+    it("Solves Non-Trivial Path") {
+      val path = sk32.computePath((1, 5), (20, 31))
+      assert(sk32.validateMoves(path))
+    }
+
+    it("Solves Non-Trivial Path with Heuristics") {
+      val path = sk32.computePath((1, 5), (20, 31), "Chebyshev")
+      assert(sk32.validateMoves(path))
+    }
+
+
 
   }
 
