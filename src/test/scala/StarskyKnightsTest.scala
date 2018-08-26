@@ -29,25 +29,15 @@ class StarskyKnightsTest extends FunSpec {
     }
 
     it("Solves Slightly Less Trivial Path") {
-      val path = sk12.computePath((1, 7), (2, 10))
+      val path = sk12.computePath((1, 7), (2, 10), "Chess", useBounding = true)
       assert(sk12.validateMoves(path))
     }
 
     it("Solves Non-Trivial Path") {
-      val path = sk32.computePath((10, 5), (20, 31))
-      assert(sk32.validateMoves(path))
-    }
-
-    it("Solves Non-Trivial Path with Bounding") {
-      val path = sk32.computePath((10, 5), (20, 31), useBounding = true)
-      assert(sk32.validateMoves(path))
-    }
-
-    it("Solves Non-Trivial Path with Heuristics and Bounding") {
       val path = sk32.computePath((10, 5), (20, 31), "Chess", useBounding = true)
+      println(path.length)
       assert(sk32.validateMoves(path))
     }
-
   }
 
 }
