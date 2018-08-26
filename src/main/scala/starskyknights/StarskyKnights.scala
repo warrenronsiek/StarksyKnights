@@ -9,9 +9,8 @@ class StarskyKnights(nRows: Int, nCols: Int) {
 
   private val chessDistance = (a: (Int, Int), b: (Int, Int)) => max(abs(a._1 - b._1), abs(a._2 - b._2))
 
-  /** The idea is to construct a lower bound for remaining moves. If you relax horses movement constraints, and instead
-    * assume they can move anywhere within two squares, you can then calculate a remaining moves lower bound. That is
-    * accomplished with this calculation. */
+  /** If you relax horses movement constraints, and instead assume they can move anywhere within two squares, you can
+    * then calculate a remaining moves lower bound. That is accomplished with this calculation. */
   private val relaxedOptimalEstimate = (end: (Int, Int)) => (a: (Int, Int)) => ceil(chessDistance(a, end) / 2.0)
 
   /** I tried making this recursive as well, but it turned out to be more complicated than the non-functional version.
