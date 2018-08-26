@@ -18,8 +18,8 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     * Keep it simple. */
   def boardString(currentPosition: (Int, Int)): String = {
     var boardString = ""
-    for (i <- 0 until nCols) {
-      for (j <- 0 until nRows) {
+    for (i <- 0 until nRows) {
+      for (j <- 0 until nCols) {
         if ((i, j) == currentPosition) {
           boardString += "K "
         } else {
