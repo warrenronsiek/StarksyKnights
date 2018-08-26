@@ -1,4 +1,4 @@
-import org.scalatest.{FunSpec, FunSuite}
+import org.scalatest.FunSpec
 import starskyknights.StarskyKnights
 
 class StarskyKnightsTest extends FunSpec {
@@ -29,12 +29,12 @@ class StarskyKnightsTest extends FunSpec {
     }
 
     it("Solves Slightly Less Trivial Path") {
-      val path = sk12.computePath((1, 7), (2, 10), "Chess", useBounding = true)
+      val path = sk12.computePath((1, 7), (2, 10))
       assert(sk12.validateMoves(path))
     }
 
     it("Solves Non-Trivial Path") {
-      val path = sk32.computePath((10, 5), (20, 31), "Chess", useBounding = true)
+      val path = sk32.computePath((10, 5), (20, 31))
       println(path.length)
       assert(sk32.validateMoves(path))
     }
