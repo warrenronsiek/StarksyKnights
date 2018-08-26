@@ -9,14 +9,15 @@ class StarskyKnights(nRows: Int, nCols: Int) {
 
   private val chessDistance = (a: (Int, Int), b: (Int, Int)) => max(abs(a._1 - b._1), abs(a._2 - b._2))
 
+  /** The idea is to construct a lower bound for remaining moves. If you relax horses movement constraints, and instead
+    * assume they can move anywhere within two squares, you can then calculate a remaining moves lower bound. That is
+    * accomplished with this calculation.*/
   private val relaxedOptimalEstimate = (end: (Int, Int)) => (a: (Int, Int)) => ceil(chessDistance(a, end) / 2.0)
 
   def generateMoveSet(tile: (Int, Int), traversed: immutable.Map[(Int, Int), Boolean] = mapFactory): Set[(Int, Int)] = {
     Set(
-      (tile._1 - 1, tile._2 + 2), (tile._1 + 1, tile._2 + 2),
-      (tile._1 + 2, tile._2 + 1), (tile._1 + 2, tile._2 - 1),
-      (tile._1 + 1, tile._2 - 2), (tile._1 - 1, tile._2 - 2),
-      (tile._1 - 2, tile._2 - 1), (tile._1 - 2, tile._2 + 1)
+      (tile._1 - 1, tile._2 + 2), (tile._1 + 1, tile._2 + 2), (tile._1 + 2, tile._2 + 1), (tile._1 + 2, tile._2 - 1),
+      (tile._1 + 1, tile._2 - 2), (tile._1 - 1, tile._2 - 2), (tile._1 - 2, tile._2 - 1), (tile._1 - 2, tile._2 + 1)
     ).filter(t => t._1 >= 0 && t._2 >= 0 && t._1 < nCols && t._2 < nRows && !traversed(t))
   }
 

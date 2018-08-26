@@ -1,8 +1,6 @@
 StarskyKnights
 ==============
 
-![Drag Racing](StarskyKnights.jpeg)
-
 I would have completed parts 4 and 5 if I didn't have to manually identify and write down the coordinates of all the non-standard 
 tiles.
 
@@ -13,3 +11,5 @@ Features:
 * Almost purely functional.
 * There is a testing suite that validates the code. This fulfills the "use the validator" instructions in part 4.
 * Pretty sure it finds an optimal solution.
+
+![Van Gogh Truck](StarskyKnights.jpeg)
