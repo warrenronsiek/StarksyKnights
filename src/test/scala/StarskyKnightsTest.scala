@@ -35,7 +35,6 @@ class StarskyKnightsTest extends FunSpec {
 
     it("Solves Non-Trivial Path") {
       val path = sk32.computePath((10, 5), (20, 31))
-      println(path.length)
       assert(sk32.validateMoves(path))
     }
   }
