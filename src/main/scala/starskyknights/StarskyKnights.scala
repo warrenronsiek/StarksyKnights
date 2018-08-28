@@ -30,6 +30,7 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     boardString
   }
 
+  /** Create a set of all the valid moves from a given tile. */
   def generateMoveSet(tile: (Int, Int), traversed: immutable.Map[(Int, Int), Boolean] = mapFactory): Set[(Int, Int)] = {
     Set(
       (tile._1 - 1, tile._2 + 2), (tile._1 + 1, tile._2 + 2), (tile._1 + 2, tile._2 + 1), (tile._1 + 2, tile._2 - 1),
@@ -37,6 +38,7 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     ).filter(t => t._1 >= 0 && t._2 >= 0 && t._1 < nCols && t._2 < nRows && !traversed(t))
   }
 
+  /** Makes sure that a list tiles constitutes a vail move sequence */
   def validateMoves(moves: List[(Int, Int)], printMoves: Boolean = false): Boolean = {
     val head :: tail = moves
     if (tail == List()) {
@@ -49,6 +51,7 @@ class StarskyKnights(nRows: Int, nCols: Int) {
     }
   }
 
+  /** Given start/end tiles, computes a sequence of moves between them.*/
   def computePath(start: (Int, Int), end: (Int, Int), heuristic: String = "Chess"): List[(Int, Int)] = {
     var bestSolution = Double.PositiveInfinity
     val findRelaxedMovesRemaining = relaxedOptimalEstimate(end)
